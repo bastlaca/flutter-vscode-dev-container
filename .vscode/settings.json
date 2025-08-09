@@ -1,0 +1,18 @@
+{
+    "dart.flutterSdkPath": "/usr/lib/flutter",
+    "dart.analysisExcludedFolders": [
+        "/workspace/build",
+        "/workspace/.dart_tool",
+        "/workspace/.git",
+        "/workspace/ios/Pods",
+        "/workspace/android/.gradle"
+    ],
+    "files.watcherExclude": {
+        "**/.git/**": true,
+        "**/.dart_tool/**": true,
+        "**/build/**": true,
+        "**/ios/Pods/**": true,
+        "**/android/.gradle/**": true
+    },
+    "debug.toolBarLocation": "commandCenter"
+}

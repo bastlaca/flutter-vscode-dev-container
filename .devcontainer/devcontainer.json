@@ -1,0 +1,21 @@
+{
+  "name": "Flutter Dev Env (WiFi device)",
+  "dockerComposeFile": [
+    "docker-compose.yaml"
+  ],
+  "workspaceFolder": "/workspace",
+  "service": "dev",
+  "overrideCommand": true,
+  "remoteUser": "root",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "Dart-Code.flutter",
+        "ms-vscode-remote.remote-containers"
+      ]
+    }
+  },
+  "mounts": [
+    "source=${localEnv:HOME}/.android,target=/root/.android,type=bind,consistency=cached"
+  ]
+}
