@@ -5,7 +5,43 @@ Supports connecting a **physical Android device via Wi-Fi debugging** and runnin
 No need for Android Studio, AVD, or a native emulator – the goal is simplicity, portability, and minimal setup time.
 
 ---
+## Docker Network Fix - apt-get timeout solution
 
+### Problem
+Docker Desktop 4.42.0+ versions suddenly can't connect to Debian package repositories (`deb.debian.org`). The `apt-get update` fails with timeout errors.
+
+### Solution
+Create or modify the Docker daemon configuration file:
+
+**macOS:** `~/.docker/daemon.json`
+**Windows:** `%USERPROFILE%\.docker\daemon.json`
+**Linux:** `/etc/docker/daemon.json`
+
+```json
+{
+  "dns": ["8.8.8.8", "8.8.4.4", "1.1.1.1"],
+  "mtu": 1450,
+  "default-address-pools": [
+    {
+      "base": "192.168.0.0/16",
+      "size": 24
+    }
+  ]
+}
+```
+
+## Steps
+1. Save the above configuration to the appropriate location
+2. **Completely restart Docker Desktop** (quit + restart)
+3. Try the devcontainer build again
+
+## What happened?
+- Docker Desktop newer versions changed network handling
+- New intelligent DNS filtering blocks necessary DNS records
+- MTU setting prevents packet fragmentation issues
+- Explicit DNS servers bypass Docker's own DNS manag
+
+---
 ## ✨ Benefits
 
 - **No host-side installation chaos** – everything is handled inside the container.
@@ -81,6 +117,43 @@ No emulator required. The host does not need to run ADB, avoiding conflicts.
 **Egy készre csomagolt VS Code devcontainer Flutter fejlesztéshez**, amely kizárólag Docker-t használ a hoston.  
 Támogatja a **fizikai Android eszköz Wi-Fi debuggal** való csatlakoztatását, valamint a webes futtatást a Flutter saját web szerverén keresztül.  
 Nincs szükség Android Studio-ra, AVD-re vagy natív emulátorra – a cél az egyszerű, hordozható és minimális beállítási idő.
+
+---
+# Docker Network Fix - apt-get timeout megoldás
+
+## Probléma
+Docker Desktop 4.42.0+ verzióknál a devcontainer-ek hirtelen nem tudnak kapcsolódni a Debian csomagtárakhoz (`deb.debian.org`). Az `apt-get update` timeout hibával megszakad.
+
+## Megoldás
+Hozz létre vagy módosítsd a Docker daemon konfigurációs fájlt:
+
+**macOS:** `~/.docker/daemon.json`
+**Windows:** `%USERPROFILE%\.docker\daemon.json`
+**Linux:** `/etc/docker/daemon.json`
+
+```json
+{
+  "dns": ["8.8.8.8", "8.8.4.4", "1.1.1.1"],
+  "mtu": 1450,
+  "default-address-pools": [
+    {
+      "base": "192.168.0.0/16",
+      "size": 24
+    }
+  ]
+}
+```
+
+## Lépések
+1. Mentsd el a fenti konfigurációt a megfelelő helyre
+2. **Indítsd újra a Docker Desktop-ot teljesen** (kilépés + újraindítás)
+3. Próbáld újra a devcontainer buildet
+
+## Mi történt?
+- A Docker Desktop újabb verziói megváltoztatták a hálózati kezelést
+- Az új intelligens DNS szűrés blokkolja a szükséges DNS rekordokat
+- Az MTU beállítás megakadályozza a csomag fragmentálódási problémákat
+- Az explicit DNS szerverek megkerülik Docker saját DNS kezelését
 
 ---
 
